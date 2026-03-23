@@ -39,11 +39,13 @@ def manual_update(request):
 # Receive sensor data from ESP / IoT
 @csrf_exempt
 def receive_sensor_data(request):
+    print("qq")
     if request.method == "POST":
+        print("q")
         data = json.loads(request.body)
         print(data)
 
-        moisture = data.get("moisture")   # soil moisture value
+        moisture = data.get("moisture")
 
         sensor_data.objects.create(sensor_value=moisture)
 

@@ -7,7 +7,7 @@ from machine import ADC, Pin
 WIFI_SSID = "iot kids"
 WIFI_PASSWORD = "bright kidoos" 
 
-SERVER_IP_URL = "http://10.189.178.158:8000/"
+SERVER_IP_URL = "http://10.163.201.158:8000/" 
 
 wifi_status = False
 
@@ -73,13 +73,14 @@ def send_data(data):
         "moisture": data
     }
 
-    url = SERVER_IP_URL + "api/garden-sensor/"
+    url = SERVER_IP_URL + "api/gardensensor/"
     
     print(url)
 
     r = None
 
     try:
+        print(payload)
         r = urequests.post(url, json=payload)
         print("Server response:", r.text)
 
@@ -141,3 +142,4 @@ def main():
 
 
 main()
+
