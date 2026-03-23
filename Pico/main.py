@@ -7,7 +7,7 @@ from machine import ADC, Pin
 WIFI_SSID = "iot kids"
 WIFI_PASSWORD = "bright kidoos" 
 
-SERVER_IP_URL = "http://10.163.201.158:8000/" 
+SERVER_IP_URL = "http://10.163.201.236:8000/" 
 
 wifi_status = False
 
@@ -58,10 +58,10 @@ def motor_on(delay):
     pump.value(0)
 
 
-def control_pump(value, threshold):
+def control_pump(value, threshold, off_delay):
     if value > threshold:
         print("Soil is dry - Pump ON")
-        motor_on()
+        motor_on(off_delay)
     else:
         print("Soil is wet - Pump OFF")
         pump.value(0)
@@ -122,7 +122,7 @@ def main():
             data = get_data()
 
             status = data.get("status")
-            delay_hour = data.get("delay_hour")
+            delay_hour = data.get("is_delay_hour")
             pump_on = data.get("pump_on")
             off_delay = data.get("off_delay")
             threshold = data.get("threshold")
@@ -136,7 +136,7 @@ def main():
             if pump_on:
                 motor_on(off_delay)
 
-        control_pump(soil, THRES)
+        control_pump(soil, THRES, off_delay)
 
         time.sleep(2)
 
