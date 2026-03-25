@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart Gardening Dashboard</title>
+    <title>Smart Gardening - Help</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
@@ -23,17 +23,13 @@
             box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
             transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
         }
-        
-        /* Custom Checkbox as Switch */
-        .toggle-checkbox:checked { right: 0; border-color: #10B981; }
-        .toggle-checkbox:checked + .toggle-label { background-color: #10B981; }
 
         /* Hide scrollbar */
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-thumb { background-color: #475569; border-radius: 4px; }
     </style>
 </head>
-<body class="bg-gradient-dark min-h-screen text-slate-200 flex overflow-hidden">
+<body class="bg-gradient-dark min-h-screen text-slate-200 flex overflow-hidden relative">
 
     <!-- Mobile Overlay -->
     <div id="sidebar-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-gray-900/50 z-20 hidden lg:hidden backdrop-blur-sm transition-opacity opacity-0"></div>
@@ -51,8 +47,8 @@
                 </div>
                 <span>Dashboard</span>
             </a>
-            <a href="{% url 'update_schedule' %}" class="flex items-center px-4 py-3 bg-green-500/10 text-green-400 rounded-xl font-medium transition-colors">
-                <div class="w-6 h-6 mr-3 flex items-center justify-center flex-shrink-0 text-green-400">
+            <a href="{% url 'update_schedule' %}" class="flex items-center px-4 py-3 text-slate-400 hover:bg-white/5 hover:text-white rounded-xl font-medium transition-colors group">
+                <div class="w-6 h-6 mr-3 flex items-center justify-center flex-shrink-0 text-slate-400 group-hover:text-white transition-colors">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                 </div>
                 <span>Automation Settings</span>
@@ -63,8 +59,8 @@
                 </div>
                 <span>System Configuration</span>
             </a>
-            <a href="{% url 'help' %}" class="flex items-center px-4 py-3 text-slate-400 hover:bg-white/5 hover:text-white rounded-xl font-medium transition-colors group">
-                <div class="w-6 h-6 mr-3 flex items-center justify-center flex-shrink-0 text-slate-400 group-hover:text-white transition-colors">
+            <a href="{% url 'help' %}" class="flex items-center px-4 py-3 bg-green-500/10 text-green-400 rounded-xl font-medium transition-colors">
+                <div class="w-6 h-6 mr-3 flex items-center justify-center flex-shrink-0 text-green-400">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                 </div>
                 <span>Help</span>
@@ -87,7 +83,7 @@
                 <button onclick="toggleSidebar()" class="lg:hidden p-2 mr-4 text-slate-400 hover:bg-white/5 rounded-lg focus:outline-none transition-colors">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
                 </button>
-                <h2 class="text-xl lg:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400 tracking-tight">Automation Settings</h2>
+                <h2 class="text-xl lg:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400 tracking-tight">Help & Documentation</h2>
             </div>
             <div class="flex items-center">
                 <a href="{% url 'welcome' %}" class="flex items-center px-6 py-2 bg-white/5 hover:bg-red-500/20 hover:text-red-400 hover:border-red-500/40 rounded-xl border border-white/10 text-slate-200 transition-all text-sm font-bold shadow-sm">
@@ -96,57 +92,54 @@
             </div>
         </header>
 
-        <!-- Dashboard Body -->
+        <!-- Help Content -->
         <main class="flex-1 overflow-x-hidden overflow-y-auto bg-transparent p-6 lg:p-10 scroll-smooth">
-            <div class="max-w-3xl mx-auto">
-                <div class="glass-panel p-8 rounded-2xl shadow-sm border border-white/10 relative overflow-hidden group">
+            <div class="max-w-4xl mx-auto space-y-8">
+                
+                <div class="glass-panel p-8 rounded-[2rem] shadow-sm relative overflow-hidden group">
                     <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-400 to-green-500"></div>
                     
-                    <h3 class="text-2xl font-bold text-white mb-6 flex items-center">
-                        <svg class="w-6 h-6 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                        Schedule Overrides
-                    </h3>
-                    
-                    <form method="POST" action="{% url 'update_schedule' %}" class="space-y-6">
-                        {% csrf_token %}
-                        
-                        <div class="bg-white/5 p-6 rounded-xl border border-white/10">
-                            <div class="flex items-center justify-between mb-2">
-                                <div>
-                                    <label class="text-sm font-bold text-slate-300">Automation Status</label>
-                                    <p class="text-xs text-slate-500 mt-1">Enable or disable automatic hydration processes</p>
-                                </div>
-                                <div class="relative inline-block w-12 mr-2 align-middle select-none transition duration-200 ease-in">
-                                    {{ form.status.errors }}
-                                    <input type="checkbox" name="status" id="id_status" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer border-slate-700" 
-                                           {% if form.status.value %}checked{% endif %}>
-                                    <label for="id_status" class="toggle-label block overflow-hidden h-6 rounded-full bg-slate-700 cursor-pointer transition-colors duration-300"></label>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="space-y-8 text-slate-300">
+                        <section>
+                            <h3 class="text-2xl font-bold text-white mb-4 flex items-center">
+                                <span class="w-8 h-8 rounded-lg bg-green-500/10 text-green-400 flex items-center justify-center mr-3 text-sm">01</span>
+                                Dashboard Overview
+                            </h3>
+                            <p class="leading-relaxed">The dashboard provides real-time insights into your garden's health. You can monitor soil moisture levels, check pump status, and see the last watered time. The values update automatically every few seconds to ensure you have the most current data.</p>
+                        </section>
 
-                        <div class="bg-white/5 p-6 rounded-xl border border-white/10">
-                            <div>
-                                <label for="id_delay" class="block text-sm font-bold text-slate-300 mb-2">Hydration Delay (Hours)</label>
-                                <p class="text-xs text-slate-500 mb-3">Delay between watering cycles to prevent root rot</p>
-                                {{ form.delay.errors }}
-                                <div class="relative">
-                                    <input type="number" name="delay" id="id_delay" value="{{ form.delay.value|default:0 }}"
-                                           class="block w-full pl-4 pr-12 py-3 bg-white/5 border border-white/10 rounded-xl text-white focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition-all shadow-sm">
-                                    <div class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
-                                        <span class="text-slate-500 font-semibold text-sm">hrs</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="pt-4 flex justify-end">
-                            <button type="submit" class="inline-flex justify-center px-8 py-3 bg-gradient-to-r from-green-600 to-emerald-500 hover:from-green-500 hover:to-emerald-400 text-white font-bold rounded-xl shadow-lg shadow-green-500/30 transition-all duration-300 hover:-translate-y-0.5 focus:ring-4 focus:ring-green-500/50">
-                                Apply Schedule Update
-                            </button>
-                        </div>
-                    </form>
+                        <section>
+                            <h3 class="text-2xl font-bold text-white mb-4 flex items-center">
+                                <span class="w-8 h-8 rounded-lg bg-green-500/10 text-green-400 flex items-center justify-center mr-3 text-sm">02</span>
+                                Controlling the Water Pump
+                            </h3>
+                            <p class="leading-relaxed">From the dashboard, you can manually toggle the water pump using the "Manual Override" switch. This allows you to water your plants immediately regardless of the automated schedule. Make sure your hardware is connected to see these changes take effect.</p>
+                        </section>
+
+                        <section>
+                            <h3 class="text-2xl font-bold text-white mb-4 flex items-center">
+                                <span class="w-8 h-8 rounded-lg bg-green-500/10 text-green-400 flex items-center justify-center mr-3 text-sm">03</span>
+                                Automated Scheduling
+                            </h3>
+                            <p class="leading-relaxed">The system automatically triggers the water pump when the soil moisture drops below the specified threshold. To prevent over-watering, a "Hydration Delay" is implemented between cycles. You can configure both the threshold and the delay in the settings pages.</p>
+                        </section>
+
+                        <section>
+                            <h3 class="text-2xl font-bold text-white mb-4 flex items-center">
+                                <span class="w-8 h-8 rounded-lg bg-green-500/10 text-green-400 flex items-center justify-center mr-3 text-sm">04</span>
+                                System Configuration
+                            </h3>
+                            <p class="leading-relaxed">In System Configuration, you can define the master moisture threshold and post-pump delays. These parameters are crucial for fine-tuning the IoT device's behavior to match specific plant needs.</p>
+                        </section>
+                    </div>
+                    
+                    <div class="mt-12 flex items-center justify-center space-x-4">
+                        <a href="{% url 'dashboard' %}" class="px-8 py-3 bg-green-600 hover:bg-green-500 text-white font-bold rounded-xl shadow-lg transition-all transform hover:-translate-y-1">
+                            Go to Dashboard
+                        </a>
+                    </div>
                 </div>
+
             </div>
         </main>
     </div>

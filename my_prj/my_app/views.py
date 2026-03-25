@@ -5,7 +5,11 @@ import json
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_GET
-from datetime import datetime
+from datetime import datetime, timedelta
+from django.utils import timezone
+from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 
 
 def update_schedule(request):
@@ -15,7 +19,7 @@ def update_schedule(request):
         form = GardeningForm(request.POST, instance=data)
         if form.is_valid():
             form.save()
-            return redirect("update_schedule")
+            return redirect("dashboard")
     else:
         form = GardeningForm(instance=data)
 
@@ -29,7 +33,7 @@ def manual_update(request):
         form = ManualForm(request.POST, instance=data)
         if form.is_valid():
             form.save()
-            return redirect("relay_update")
+            return redirect("dashboard")
     else:
         form = ManualForm(instance=data)
 
@@ -85,3 +89,86 @@ def send_garden_data(request):
     }
 
     return JsonResponse(data)
+
+
+def index_page(request):
+    auth_logout(request)
+    return render(request, 'index.html')
+
+def login_page(request):
+    if request.method == 'POST':
+        u = request.POST.get('username')
+        p = request.POST.get('password')
+        user = authenticate(request, username=u, password=p)
+        if user is not None:
+            auth_login(request, user)
+            return redirect('welcome')
+        else:
+            messages.error(request, "Invalid username or password.")
+            
+    return render(request, 'login.html')
+
+@login_required(login_url='login')
+def welcome_page(request):
+    return render(request, 'welcome.html')
+
+@login_required(login_url='login')
+def help_page(request):
+    return render(request, 'help.html')
+
+def logout_view(request):
+    auth_logout(request)
+    return redirect('login')
+
+
+@login_required(login_url='login')
+def dashboard(request):
+    return render(request, 'dashboard.html')
+
+
+@login_required(login_url='login')
+def dashboard_api_status(request):
+    try:
+        latest_sensor = sensor_data.objects.last()
+        moisture = latest_sensor.sensor_value if latest_sensor else "N/A"
+        
+        pump = manual.objects.first()
+        pump_on = pump.pump_on if pump else False
+        threshold = pump.threshold if pump else 500
+        
+        last_water_obj = LastWater.objects.order_by("-time").first()
+        last_water_time = last_water_obj.time.strftime('%Y-%m-%d %H:%M:%S') if last_water_obj else "Never"
+        
+        garden = Gardening.objects.first()
+        delay_active = False
+        
+        # Calculate if delay condition is active
+        if last_water_obj and garden:
+            now_dt = timezone.now() if timezone.is_aware(last_water_obj.time) else datetime.now()
+            delay_duration = timedelta(hours=garden.delay)
+            if now_dt < last_water_obj.time + delay_duration:
+                delay_active = True
+
+        return JsonResponse({
+            'moisture': moisture,
+            'pump_on': pump_on,
+            'threshold': threshold,
+            'last_watered': last_water_time,
+            'delay_active': delay_active,
+            'status': 'online'
+        })
+    except Exception as e:
+        return JsonResponse({'status': 'offline', 'error': str(e)})
+
+
+@csrf_exempt
+@login_required(login_url='login')
+def toggle_pump(request):
+    if request.method == 'POST':
+        pump = manual.objects.first()
+        if pump:
+            pump.pump_on = not pump.pump_on
+            pump.save()
+            return JsonResponse({'status': 'success', 'pump_on': pump.pump_on})
+        return JsonResponse({'status': 'error', 'message': 'Pump record not found.'})
+    return JsonResponse({'status': 'error', 'message': 'Invalid request method.'})

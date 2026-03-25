@@ -4,10 +4,10 @@ import urequests
 from machine import ADC, Pin
 
 
-WIFI_SSID = "iot kids"
-WIFI_PASSWORD = "bright kidoos" 
+WIFI_SSID = "Redmi Note 12"
+WIFI_PASSWORD = "jijijiji" 
 
-SERVER_IP_URL = "http://10.163.201.236:8000/" 
+SERVER_IP_URL = "http://172.19.108.158:8000/" 
 
 wifi_status = False
 
