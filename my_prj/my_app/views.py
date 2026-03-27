@@ -61,31 +61,31 @@ def receive_sensor_data(request):
     return JsonResponse({"error": "POST required"})
 
 
-# Send config to IoT device
 @require_GET
 def send_garden_data(request):
     garden = Gardening.objects.first()
     pump = manual.objects.first()
     last_water = LastWater.objects.order_by("-time").first()
 
-    now = datetime.now()
+    now = timezone.now()
 
-    # 🛑 Check if delay time is active
     if last_water:
-        if last_water.time + garden.delay < now:
+        delay_time = last_water.time + timedelta(minutes=garden.delay)  # 👈 FIX
+
+        if delay_time < now:
             is_delay_hour = True
-            last_water.objects.create()
+            LastWater.objects.create()  # 👈 also fixed this line
         else:
             is_delay_hour = False
     else:
-        is_delay_hour = False   # no previous watering
+        is_delay_hour = False
 
-    data = {
+    data = { 
         "status": garden.status,
         "is_delay_hour": is_delay_hour,
         "pump_on": pump.pump_on,
         "off_delay": pump.off_delay,
-        "threshold": pump.threshold,
+        "threshold": pump.threshold
     }
 
     return JsonResponse(data)

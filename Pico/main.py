@@ -7,15 +7,16 @@ from machine import ADC, Pin
 WIFI_SSID = "Redmi Note 12"
 WIFI_PASSWORD = "jijijiji" 
 
-SERVER_IP_URL = "http://172.19.108.158:8000/" 
+SERVER_IP_URL = "http://172.19.108.236:8000/" 
 
 wifi_status = False
 
 soil_sensor = ADC(28)
 
 pump = Pin(15, Pin.OUT)
+off_delay = 10
 
-THRES  = 30000
+THRES  = 40000
 
 
 def connect_wifi():
@@ -116,27 +117,30 @@ def main():
         connect_wifi()
 
         soil = soil_data()
+        
+        pump_on = False
 
         if wifi_status:
             send_data(soil)
             data = get_data()
+            
+            if data:
+                status = data.get("status")
+                delay_hour = data.get("is_delay_hour")
+                pump_on = data.get("pump_on")
+                off_delay = data.get("off_delay")
+                threshold = data.get("threshold")
 
-            status = data.get("status")
-            delay_hour = data.get("is_delay_hour")
-            pump_on = data.get("pump_on")
-            off_delay = data.get("off_delay")
-            threshold = data.get("threshold")
+                THRES = threshold
 
-            THRES = threshold
+                if status:
+                    if delay_hour:
+                        motor_on(off_delay)
 
-            if status:
-                if delay_hour:
-                    motor_on(off_delay)
-
-            if pump_on:
-                motor_on(off_delay)
-
-        control_pump(soil, THRES, off_delay)
+        if pump_on:
+            motor_on(off_delay)
+        else:
+            control_pump(soil, THRES, off_delay)
 
         time.sleep(2)
 
