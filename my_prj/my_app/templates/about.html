@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Smart Gardening</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'my_app/css/style.css' %}">
+</head>
+
+<body class="bg-gradient-dark min-h-screen text-slate-800 flex flex-col items-center py-12 px-6 overflow-x-hidden relative">
+
+    <!-- Background Glass Blobs (Subtle over image) -->
+    <div class="absolute top-[-10%] left-[-10%] w-[40vw] h-[40vw] bg-emerald-100 rounded-full mix-blend-multiply filter blur-[150px] opacity-15 animate-blob pointer-events-none" style="z-index: -1;"></div>
+    <div class="absolute bottom-[-10%] right-[-10%] w-[50vw] h-[50vw] bg-violet-100 rounded-full mix-blend-multiply filter blur-[180px] opacity-10 animate-blob pointer-events-none" style="animation-delay: 2s; z-index: -1;"></div>
+
+    <div class="max-w-4xl w-full">
+        <div class="flex items-center justify-between mb-10 fade-in">
+            <h1 class="text-4xl font-extrabold text-slate-900 tracking-tight">About Smart Gardening</h1>
+            <a href="{% url 'welcome' %}"
+                class="px-6 py-2 bg-white/50 backdrop-blur-md hover:bg-slate-100 border border-slate-200 rounded-xl text-slate-700 font-bold transition-all shadow-sm">
+                Back
+            </a>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- Project Intro -->
+            <div class="glass-card p-10 rounded-[2.5rem] md:col-span-2">
+                <div class="flex items-center mb-6">
+                    <div class="p-3 bg-emerald-50 text-emerald-600 rounded-2xl mr-4">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"></path>
+                        </svg>
+                    </div>
+                    <h2 class="text-2xl font-bold text-slate-800">What is Smart Gardening?</h2>
+                </div>
+                <p class="text-slate-600 leading-relaxed text-lg mb-4">
+                    Smart Gardening is an IoT-powered ecosystem designed to bring intelligence to your plant care routine. By combining advanced sensor technology with real-time web monitoring, we enable you to maintain your garden from anywhere in the world.
+                </p>
+                <p class="text-slate-600 leading-relaxed text-lg">
+                    Whether you are a hobbyist with indoor plants or managing a larger home garden, our platform ensures your plants receive the exact hydration they need, preventing both drying and root rot through precise automation.
+                </p>
+            </div>
+
+            <!-- Features Grid -->
+            <div class="glass-card p-8 rounded-[2rem] hover:border-green-400 Transition-all duration-300">
+                <div class="flex items-center mb-4">
+                    <div class="p-2 bg-blue-50 text-blue-500 rounded-lg mr-3">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-800">Real-time Dashboard</h3>
+                </div>
+                <p class="text-slate-500 text-sm leading-relaxed">
+                    Instantly monitor soil moisture levels, pump status, and system health through our live-updating dashboard. No manual checks required.
+                </p>
+            </div>
+
+            <div class="glass-card p-8 rounded-[2rem] hover:border-green-400 Transition-all duration-300">
+                <div class="flex items-center mb-4">
+                    <div class="p-2 bg-emerald-50 text-emerald-500 rounded-lg mr-3">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-800">Automatic Hydration</h3>
+                </div>
+                <p class="text-slate-500 text-sm leading-relaxed">
+                    Set a moisture threshold and let our system handle the rest. The pump triggers automatically when your soil gets too dry, maintaining an optimal environment.
+                </p>
+            </div>
+
+            <div class="glass-card p-8 rounded-[2rem] hover:border-green-400 Transition-all duration-300">
+                <div class="flex items-center mb-4">
+                    <div class="p-2 bg-violet-50 text-violet-500 rounded-lg mr-3">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-800">Smart Delays</h3>
+                </div>
+                <p class="text-slate-500 text-sm leading-relaxed">
+                    Our "Hydration Delay" feature prevents over-watering by ensuring the system waits for a defined period after a successful watering cycle.
+                </p>
+            </div>
+
+            <div class="glass-card p-8 rounded-[2rem] hover:border-green-400 Transition-all duration-300">
+                <div class="flex items-center mb-4">
+                    <div class="p-2 bg-orange-50 text-orange-500 rounded-lg mr-3">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 18a8 8 0 110-16 8 8 0 010 16z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path><path d="M12 6v6l4 2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-800">Manual Override</h3>
+                </div>
+                <p class="text-slate-500 text-sm leading-relaxed">
+                    Need to water your plants right now? Use our dedicated manual watering page to trigger the pump unconditionally at any time.
+                </p>
+            </div>
+        </div>
+
+        <div class="mt-12 text-center fade-in">
+            <a href="{% url 'dashboard' %}" 
+               class="inline-flex items-center px-12 py-4 btn-gradient text-white text-lg font-bold rounded-2xl transition-all shadow-xl">
+                Go to Dashboard
+            </a>
+        </div>
+    </div>
+</body>
+
+</html>

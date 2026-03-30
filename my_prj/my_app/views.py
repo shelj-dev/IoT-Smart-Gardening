@@ -12,6 +12,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
 
+@login_required(login_url='login')
 def update_schedule(request):
     data = get_object_or_404(Gardening, id=1)
 
@@ -26,6 +27,7 @@ def update_schedule(request):
     return render(request, "update.html", {'form': form})
 
 
+@login_required(login_url='login')
 def manual_update(request):
     data = manual.objects.first()
 
@@ -38,6 +40,21 @@ def manual_update(request):
         form = ManualForm(instance=data)
 
     return render(request, "relay.html", {'form': form})
+
+
+@login_required(login_url='login')
+def manual_watering(request):
+    data = manual.objects.first()
+
+    if request.method == "POST":
+        form = ManualForm(request.POST, instance=data)
+        if form.is_valid():
+            form.save()
+            return redirect("dashboard")
+    else:
+        form = ManualForm(instance=data)
+
+    return render(request, "manual_watering.html", {'form': form})
 
 
 # Receive sensor data from ESP / IoT
@@ -115,6 +132,10 @@ def welcome_page(request):
 @login_required(login_url='login')
 def help_page(request):
     return render(request, 'help.html')
+
+@login_required(login_url='login')
+def about_page(request):
+    return render(request, 'about.html')
 
 def logout_view(request):
     auth_logout(request)
