@@ -16,6 +16,8 @@ soil_sensor = ADC(28)
 pump1 = Pin(16, Pin.OUT)
 pump2 = Pin(20, Pin.OUT)
 
+pump1.value(1)
+pump2.value(1)
 
 off_delay = 10
 
@@ -153,4 +155,5 @@ def main():
 
 
 main()
+
 
