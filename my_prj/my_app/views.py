@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from my_app.models import Gardening, sensor_data, manual, LastWater
-from my_app.forms import GardeningForm, ManualForm
+from my_app.forms import GardeningForm, ManualForm, ManualPumpForm
 import json
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -47,12 +47,12 @@ def manual_watering(request):
     data = manual.objects.first()
 
     if request.method == "POST":
-        form = ManualForm(request.POST, instance=data)
+        form = ManualPumpForm(request.POST, instance=data)
         if form.is_valid():
             form.save()
-            return redirect("dashboard")
+            # return redirect("dashboard")
     else:
-        form = ManualForm(instance=data)
+        form = ManualPumpForm(instance=data)
 
     return render(request, "manual_watering.html", {'form': form})
 
@@ -87,7 +87,7 @@ def send_garden_data(request):
     now = timezone.now()
 
     if last_water:
-        delay_time = last_water.time + timedelta(minutes=garden.delay)  # 👈 FIX
+        delay_time = last_water.time + timedelta(hours=garden.delay)  # 👈 FIX
 
         if delay_time < now:
             is_delay_hour = True

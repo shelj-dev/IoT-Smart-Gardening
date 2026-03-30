@@ -14,3 +14,11 @@ class ManualForm(forms.ModelForm):
             "off_delay",
             "threshold",
         ]
+
+
+class ManualPumpForm(forms.ModelForm):
+    class Meta:
+        model = manual
+        fields = [
+            "pump_on",
+        ]
