@@ -13,7 +13,10 @@ wifi_status = False
 
 soil_sensor = ADC(28)
 
-pump = Pin(15, Pin.OUT)
+pump1 = Pin(16, Pin.OUT)
+pump2 = Pin(20, Pin.OUT)
+
+
 off_delay = 10
 
 THRES  = 40000
@@ -54,9 +57,11 @@ def soil_data():
     return value
 
 def motor_on(delay):
-    pump.value(1)
+    pump1.value(0)
+    pump2.value(0)
     time.sleep(delay)
-    pump.value(0)
+    pump1.value(1)
+    pump2.value(1)
 
 
 def control_pump(value, threshold, off_delay):
@@ -65,7 +70,8 @@ def control_pump(value, threshold, off_delay):
         motor_on(off_delay)
     else:
         print("Soil is wet - Pump OFF")
-        pump.value(0)
+        pump1.value(1)
+        pump2.value(1)
 
 
 def send_data(data):
@@ -82,7 +88,7 @@ def send_data(data):
 
     try:
         print(payload)
-        r = urequests.post(url, json=payload)
+        r = urequests.post(url, json=payload , headers={"Content-Type": "application/json"})
         print("Server response:", r.text)
 
     except Exception as e:
@@ -112,7 +118,8 @@ def get_data():
 
 
 def main():
-
+    global THRES, off_delay
+    
     while True:
         connect_wifi()
 
@@ -128,8 +135,8 @@ def main():
                 status = data.get("status")
                 delay_hour = data.get("is_delay_hour")
                 pump_on = data.get("pump_on")
-                off_delay = data.get("off_delay")
-                threshold = data.get("threshold")
+                off_delay = data.get("off_delay" ,off_delay)
+                threshold = data.get("threshold",THRES)
 
                 THRES = threshold
 
@@ -142,7 +149,7 @@ def main():
         else:
             control_pump(soil, THRES, off_delay)
 
-        time.sleep(2)
+        time.sleep(0.5)
 
 
 main()
