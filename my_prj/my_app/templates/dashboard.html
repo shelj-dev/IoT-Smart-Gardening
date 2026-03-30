@@ -5,69 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Smart Gardening Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    animation: {
-                        blob: "blob 15s infinite alternate",
-                    },
-                    keyframes: {
-                        blob: {
-                            "0%": { transform: "translate(0px, 0px) scale(1)" },
-                            "100%": { transform: "translate(30px, 50px) scale(1.1)" }
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
-        
-        body { font-family: 'Inter', sans-serif; background-color: #0f172a; color: #f1f5f9; }
-        
-        .bg-gradient-dark {
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
-            background-attachment: fixed;
-        }
-
-        .glass-panel { 
-            background: rgba(30, 41, 59, 0.7); 
-            backdrop-filter: blur(24px); 
-            -webkit-backdrop-filter: blur(24px);
-            border: 1px solid rgba(255, 255, 255, 0.08); 
-            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
-            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-        }
-        
-        .glass-panel:hover {
-            border-color: rgba(16, 185, 129, 0.3);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-        }
-
-        .toggle-checkbox:checked { right: 0; border-color: #10B981; }
-        .toggle-checkbox:checked + .toggle-label { background-color: #10B981; }
-
-        /* Smooth value update transitions */
-        .value-transition { transition: opacity 0.3s ease, transform 0.3s ease; }
-        .value-update { opacity: 0; transform: translateY(-4px); }
-
-        /* Skeleton loader */
-        .skeleton { animation: pulseBg 1.5s infinite; background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%); background-size: 200% 100%; }
-        @keyframes pulseBg { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
-
-        /* Hide scrollbar */
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-thumb { background-color: #475569; border-radius: 4px; }
-    </style>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'my_app/css/style.css' %}">
 </head>
-<body class="bg-gradient-dark min-h-screen text-slate-200 flex overflow-hidden relative">
+<body class="min-h-screen text-slate-800 flex overflow-hidden relative">
 
     <!-- Background Glass Blobs -->
-    <div class="absolute top-[-10%] left-[-10%] w-[40vw] h-[40vw] bg-emerald-500 rounded-full mix-blend-screen filter blur-[100px] opacity-20 animate-blob pointer-events-none" style="z-index: 0;"></div>
-    <div class="absolute bottom-[-10%] right-[-10%] w-[50vw] h-[50vw] bg-violet-500 rounded-full mix-blend-screen filter blur-[120px] opacity-15 animate-blob pointer-events-none" style="animation-delay: 2s; z-index: 0;"></div>
-    <div class="absolute top-[30%] left-[50%] w-[30vw] h-[30vw] bg-teal-400 rounded-full mix-blend-screen filter blur-[90px] opacity-15 animate-blob pointer-events-none" style="animation-delay: 4s; z-index: 0;"></div>
+    <div class="absolute top-[-10%] left-[-10%] w-[45vw] h-[45vw] bg-emerald-200 rounded-full mix-blend-multiply filter blur-[120px] opacity-20 animate-blob pointer-events-none" style="z-index: 0;"></div>
+    <div class="absolute bottom-[-10%] right-[-10%] w-[55vw] h-[55vw] bg-violet-200 rounded-full mix-blend-multiply filter blur-[150px] opacity-15 animate-blob pointer-events-none" style="animation-delay: 2s; z-index: 0;"></div>
+    <div class="absolute top-[30%] left-[50%] w-[35vw] h-[35vw] bg-teal-200 rounded-full mix-blend-multiply filter blur-[100px] opacity-15 animate-blob pointer-events-none" style="animation-delay: 4s; z-index: 0;"></div>
 
 
     <!-- Mobile Overlay -->
@@ -77,7 +23,7 @@
     <aside id="sidebar" class="fixed lg:static inset-y-0 left-0 z-30 w-64 glass-panel border-r border-white/5 shadow-lg transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out flex flex-col">
         <div class="flex items-center justify-center h-20 border-b border-white/5 px-6">
             <svg class="w-8 h-8 text-green-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"></path></svg>
-            <span class="text-lg font-bold text-white tracking-tight">Smart Garden</span>
+            <span class="text-lg font-bold text-slate-900 tracking-tight">Smart Garden</span>
         </div>
         <nav class="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
             <a href="{% url 'dashboard' %}" class="flex items-center px-4 py-3 bg-green-500/10 text-green-400 rounded-xl font-medium transition-colors">
@@ -143,7 +89,7 @@
                         <div class="flex justify-between items-start mb-4">
                             <div>
                                 <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Soil Moisture</p>
-                                <div class="text-3xl font-extrabold text-white value-transition" id="moisture-val">
+                                <div class="text-3xl font-extrabold text-slate-900 value-transition" id="moisture-val">
                                     <span class="skeleton block w-16 h-8 rounded"></span>
                                 </div>
                             </div>
@@ -166,7 +112,7 @@
                         <div class="flex justify-between items-start mb-4 relative z-10">
                             <div>
                                 <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Water Pump</p>
-                                <div class="text-3xl font-extrabold text-white value-transition" id="pump-val">
+                                <div class="text-3xl font-extrabold text-slate-900 value-transition" id="pump-val">
                                     <span class="skeleton block w-20 h-8 rounded"></span>
                                 </div>
                             </div>
@@ -195,7 +141,7 @@
                         <div class="flex justify-between items-start mb-4">
                             <div>
                                 <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Last Watered</p>
-                                <div class="text-xl md:text-2xl font-bold text-white value-transition mt-2" id="last-watered-val">
+                                <div class="text-xl md:text-2xl font-bold text-slate-900 value-transition mt-2" id="last-watered-val">
                                     <span class="skeleton block w-32 h-6 rounded mb-1"></span>
                                     <span class="skeleton block w-24 h-4 rounded mt-2"></span>
                                 </div>
@@ -211,7 +157,7 @@
                         <div class="flex justify-between items-start mb-4">
                             <div>
                                 <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Automation</p>
-                                <div class="text-xl font-bold text-white value-transition mt-2" id="delay-val">
+                                <div class="text-xl font-bold text-slate-900 value-transition mt-2" id="delay-val">
                                     <span class="skeleton block w-24 h-8 rounded"></span>
                                 </div>
                             </div>
