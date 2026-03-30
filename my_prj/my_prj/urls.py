@@ -31,5 +31,6 @@ urlpatterns = [
     path('logout/', views.logout_view, name='logout'),
     path('ajax/status/', views.dashboard_api_status, name='dashboard_api_status'),
     path('ajax/toggle_pump/', views.toggle_pump, name='toggle_pump'),
+    path('history/', views.history_page, name='history'),
 ]
 

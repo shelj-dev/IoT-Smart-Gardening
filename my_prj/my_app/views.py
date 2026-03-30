@@ -148,6 +148,12 @@ def dashboard(request):
 
 
 @login_required(login_url='login')
+def history_page(request):
+    records = LastWater.objects.order_by('-time')
+    return render(request, 'history.html', {'records': records})
+
+
+@login_required(login_url='login')
 def dashboard_api_status(request):
     try:
         latest_sensor = sensor_data.objects.last()
